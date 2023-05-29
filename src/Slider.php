@@ -4,7 +4,8 @@ namespace BITM\SEIP12;
 
 use BITM\SEIP12\Config;
 
-class Slider{
+class Slider
+{
 
     public $id = null;
     public $uuid = null;
@@ -13,52 +14,179 @@ class Slider{
     public $title = null;
     public $caption = null;
 
+    private $data = null;
 
 
+    public function __construct()
+    {
 
-    //reading all
-    public function index(){
-
-        $dataSlides = file_get_contents(Config::datasource().'slideritems.json');
-        $slides = json_decode($dataSlides);
-
-        return $slides;
+        $dataSlides = file_get_contents(Config::datasource() . 'slideritems.json');
+        $this->data = json_decode($dataSlides);
     }
 
-    public function create(){
-        
+    public function index()
+    {
+
+        return $this->data;
     }
 
-    public function store($data){
-        $result = false;
+    public function create()
+    {
+    }
 
-        $dataSlides = file_get_contents(Config::datasource().'slideritems.json');
-        $slides = json_decode($dataSlides);
-        
-       
-        $slides[] = (object) (array) $data; // data is a slider object
-        
-        
+    public function store($slider)
+    {
 
-        if(file_exists(Config::datasource()."slideritems.json")){
-            $result = file_put_contents(Config::datasource()."slideritems.json",json_encode($slides));
-        }else{
-            echo "File not found";
+        $slider = $this->prepare($slider);
+        $this->data[] = (object) (array) $slider; // data is a slider object
+        return $this->insert();
+    }
+
+
+    public function show($id)
+    {
+
+        return $this->find($id);
+    }
+
+    public function edit($id = null)
+    {
+        return $this->find($id);
+    }
+
+    public function update($slider)
+    {
+
+        $slider = $this->prepare($slider);
+
+        foreach ($this->data as $key => $aslide) {
+            if ($aslide->id == $slider->id)
+                break;
         }
 
-        return $result;
+        $this->data[$key] =  $slider;
+        return $this->insert();
+    }
+
+    public function destroy($id = null)
+    { //completely removed
+        if (empty($id)) {
+            return;
+        }
+
+        foreach ($this->data as $key => $slide) {
+            if ($slide->id == $id) {
+                break;
+            }
+        }
+        // dd($key); to be deleted
+
+        /**
+         * option 1
+         * unset($slides[$key]);
+         *  
+         * */
+        unset($this->data[$key]);
+        //reindexing the array
+        $this->data = array_values($this->data);
+
+
+
+        /**
+         * option 2
+         * array_splice($slides, $key, 1)
+         *  
+         * */
+        //array_splice($slides, $key, 1); // it reindexes
+        //$data_slides = json_encode($slides);
+
+        return $this->insert();
+    }
+
+
+    public function trash()
+    {
+    }
+
+    public function delete()
+    { //soft delete
 
     }
 
 
-    public function show($id){
-        /** communicate with datasource and get data for that id */
-        $dataSlides = file_get_contents(Config::datasource().'slideritems.json');
-        $slides = json_decode($dataSlides);
-        
+    public function pdf()
+    {
+    }
+
+
+    public function xl()
+    {
+    }
+
+
+    public function word()
+    {
+    }
+
+    public function last_highest_id()
+    {
+
+        $curentUniqueId = null;
+
+        if (count($this->data) > 0) {
+            // finding unique ids
+            $ids = [];
+            foreach ($this->data as $aslide) {
+                $ids[] = $aslide->id;
+            }
+            sort($ids);
+            $lastIndex = count($ids) - 1;
+            $highestId = $ids[$lastIndex];
+
+            $curentUniqueId = $highestId + 1;
+        } else {
+            $curentUniqueId = 1;
+        }
+
+        return $curentUniqueId;
+    }
+
+    private function prepare($slider)
+    {
+
+        if (is_null($slider->id) || empty($slider->id)) {
+            $slider->id = $this->last_highest_id();
+        }
+
+        if (is_null($slider->uuid) || empty($slider->uuid)) {
+            $slider->uuid = uniqid();
+        }
+
+        return $slider;
+    }
+
+
+    private function insert()
+    {
+
+        $datafile = Config::datasource() . "slideritems.json";
+        if (file_exists($datafile)) {
+            file_put_contents($datafile, json_encode($this->data));
+            return true;
+        } else {
+            echo "File not found";
+            return false;
+        }
+    }
+
+    public function find($id = null)
+    {
+        if (is_null($id) || empty($id)) {
+            return true;
+        }
         $slide = null;
-        foreach($slides as $aslide){
-            if($aslide->id == $id){
+        foreach ($this->data as $aslide) {
+            if ($aslide->id == $id) {
                 $slide = $aslide;
                 break;
             }
@@ -66,78 +194,7 @@ class Slider{
         return $slide;
     }
 
-    public function edit(){
-        
+    public function findAll()
+    {
     }
-
-    public function update(){
-        
-    }
-
-    public function destroy(){ //completely removed
-        
-    }
-
-
-    public function trash(){
-        
-    }
-
-    public function delete(){ //soft delete
-        
-    }
-
-
-    public function pdf(){
-        
-    }
-
-
-    public function xl(){
-        
-    }
-
-
-    public function word(){
-        
-    }
-
-    public function last_highest_id(){
-
-        $curentUniqueId = null;
-
-        $dataSlides = file_get_contents(Config::datasource().'slideritems.json');
-        $slides = json_decode($dataSlides);
-
-        if(count($slides) > 0){
-            // finding unique ids
-            $ids = [];
-            foreach($slides as $aslide){
-                $ids[] = $aslide->id;
-            }
-            sort($ids);
-            $lastIndex = count($ids)-1;
-            $highestId = $ids[$lastIndex];
-
-            $curentUniqueId = $highestId+1;
-        }else{
-            $curentUniqueId = 1;
-        }
-
-        return $curentUniqueId;
-    }
-
-    public function prepare($src,$title, $caption, $alt){
-        $slider = new Slider();
-        $slider->id = $this->last_highest_id();
-        $slider->uuid = uniqid();
-        $slider->src = $src;
-        $slider->title = $title;
-        $slider->caption = $caption;
-        $slider->alt = $alt;
-
-        return $slider;
-    }
-
 }
-

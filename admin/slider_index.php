@@ -1,5 +1,5 @@
 <?php include_once($_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . 'config.php') ?>
-<?php
+<?php // phpinfo();
 	use \BITM\SEIP12\Slider;
 
 	$slider = new Slider();
@@ -68,21 +68,13 @@
 		|<a href="slider_download_xl.php">  Download XL</a>
 		|<a href="slider_download_pdf.php"> Download PDF</a>
 		|<a href="slider_print.php"> Print View </a>
-
 	</div>
 
 	<div class="table-responsive">
 		<table class="table table-bordered">
 			<thead>
 				<tr>
-					<th>#</th>
-					<th>Title</th>
-					<th>Alt</th>
-					
-					<th>Caption</th>
-					<th>Src</th>
-					<th>Action</th>
-					
+					<th>#</th> <th>Title</th> <th>Alt</th> <th>Caption</th> <th>Src</th> <th>Action</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -94,7 +86,7 @@
 				<!-- <td><img src="<?php //=$slide->src?>" height="70"></td> -->
 				<td><?=$slide->alt?></td>
 				<td><?=$slide->caption?></td>
-				<td><img src="<?= $webroot.'uploads/'.$slide->src?>" style="width:100px;height:100px"></td>
+				<td><img src="<?=$webroot.'uploads/'.$slide->src?>" style="width:100px;height:100px"></td>
 
 				<td> 
 				<a href="slider_show.php?id=<?=$slide->id?>"><button class="btn btn-primary">Show</button></a>
@@ -124,9 +116,7 @@
             </div>
             <!-- /content area -->
 
-
             <?php include_once($partials . 'footer.php') ?>
-
 
         </div>
         <!-- /main content -->

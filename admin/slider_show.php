@@ -12,7 +12,7 @@ if(!Validator::empty($id)){
 	$slider = new Slider();
 	$slide = $slider->show($id);
 }else{ // REfactor using Session based message
-	// dd("Id cannot be null or ampty");
+	 //dd("Id cannot be null or empty");
 }
 
 ?>

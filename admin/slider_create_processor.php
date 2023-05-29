@@ -14,17 +14,19 @@ if (upload($target, $destination)) {
     $src = $filename;
 }
 
-$alt = Utility::sanitize($_POST['alt']);
-$title = Utility::sanitize($_POST['title']);
-$caption = Utility::sanitize($_POST['caption']);
 
 $slider = new Slider();
-$slide =  $slider->prepare($src,$title, $caption, $alt);
 
+$slider->alt = Utility::sanitize($_POST['alt']);
+$slider->title = Utility::sanitize($_POST['title']);
+$slider->caption = Utility::sanitize($_POST['caption']);
+$slider->src = $src;
 
-$result = $slider->store($slide);
+$result = $slider->store($slider);
 
-if($result){
+if ($result) {
     redirect("slider_index.php");
+} else {
+    echo "Data is not stored";
 }
 
