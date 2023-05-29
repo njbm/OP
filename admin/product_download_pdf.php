@@ -5,27 +5,15 @@ $dataProducts = file_get_contents($datasource . DIRECTORY_SEPARATOR . 'productit
 $products = json_decode($dataProducts);
 
 
-
 $slidesHTMLStart = <<<PRODUCT
-
 
 <h1> All Sliders </h1>
 
 <table  border="1"  style="border-collapse:collapse; width:700px; text-align: center;">
-							<thead>
-								<tr>
-									<th>#</th>
-									<th>Title</th>
-									
-									<th>Alt</th>
-									<th>Caption</th>
-									<th>Src</th>
-									
-								</tr>
-							</thead>
-							<tbody>
-
-
+		<thead>
+			<tr> <th>#</th> <th>Title</th> <th>Alt</th> <th>Caption</th> <th>Src</th> </tr>
+		</thead>
+		<tbody>
 
 PRODUCT;
 
@@ -40,8 +28,7 @@ foreach ($products as $key => $product) :
 
 			<tr>
 				<td title="$product->uuid">$ser</td>
-				<td>$product->title</td>
-				
+				<td>$product->title</td>				
 				<td>$product->price</td>
 				<td>$product->caption</td>
 				<td><img src="$src" style="width:100px;height:100px"></td>

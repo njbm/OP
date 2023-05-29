@@ -11,12 +11,7 @@ class Validator{
     }
     static public function empty($var){
 
-<<<<<<< HEAD
-        return empty($var)? true:false;
-
-=======
         return empty($var)?true:false;
->>>>>>> dbe0e18b85b63341776d76db08af92368e373228
 
     }
 

@@ -1,20 +1,18 @@
 <?php include_once($_SERVER['DOCUMENT_ROOT'].DIRECTORY_SEPARATOR.'config.php') ?>
 
 <?php 
-   $id = $_GET['id'];
-    
-   /** communicate with datasource and get data for that id */
-   $dataProducts= file_get_contents($datasource.'productitems.json');
-   $products= json_decode($dataProducts);
-  
-  $product = null;
-  foreach($products as $aproduct){
-      if($aproduct->id == $id){
-          $product = $aproduct;
-          break;
-      }
-  }
+use \BITM\SEIP12\Utility\Utility;
+use \BITM\SEIP12\Product;
+use \BITM\SEIP12\Utility\Validator;
+ 
+$id = Utility::sanitize($_GET['id']);
 
+if(!Validator::empty($id)){
+	$product = new Product();
+	$products = $product->show($id);
+}else{ // REfactor using Session based message
+	 //dd("Id cannot be null or empty");
+}
 
 ?>
 
@@ -51,11 +49,13 @@
 		
     <div class="card-group mb-6">
 					<div class="card shadow-0 border-0">
-						<img class="card-img-top img-fluid" src="<?=$webroot.'uploads/'.$product->src?>" alt="">
+						<img class="card-img-top img-fluid" src="<?=$webroot.'uploads/'.$products->src?>" 
+						alt="">
 
-						<div class="card-body">
-							<h5 class="card-title"><?=$aproduct->title?></h5>
-							<p class="card-text"><?=$aproduct->caption?></p>
+						<div class="card-body">						
+							<h5 class="card-title"><?=$products->title?></h5>
+							<h4 class="card-title">Price  : <?=$products->price?>  TK</h4>
+							<p class="card-text"><?=$products->caption?></p>
 						</div>
 
 					</div>

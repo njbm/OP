@@ -1,8 +1,8 @@
 <?php include_once($_SERVER['DOCUMENT_ROOT'].DIRECTORY_SEPARATOR.'config.php') ?>
 <?php
-$dataProducts= file_get_contents($datasource.'productitems.json');
-$products = json_decode($dataProducts);
-
+use BITM\SEIP12\Product;
+$product =new Product();
+$products= $product->index();
 
 ?>
 <!DOCTYPE html>
