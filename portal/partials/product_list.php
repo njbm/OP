@@ -3,7 +3,7 @@
     $products= json_decode($dataProducts);
 
 ?>
-
+<section id="list">
 <div class="container" style="margin-top: 50px;">
   <h1>Product List</h1>
   <div class="row">
@@ -25,3 +25,4 @@
     <?php endforeach ?>
   </div>
 </div>
+</section>

@@ -26,11 +26,8 @@
     $dataSlides = file_get_contents($datasource . DIRECTORY_SEPARATOR . 'slideritems.json');
     $slides = json_decode($dataSlides);
     //dd($slides);
-
-
-
 ?>
-
+<!-- <div class=" container"> -->
 <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="false">
     <div class="carousel-indicators">
     <?php
@@ -70,24 +67,26 @@
         </div> -->
         
         <div class="carousel-item <?=$active?>">
-            <img src="<?= $webroot.'uploads/'.$slide->src?>" class="d-block w-100" alt="<?=$slide->alt?>" height="600">
+            <img src="<?= $webroot.'uploads/'.$slide->src?>" class="d-block w-100" alt="<?=$slide->alt?>" 
+            height="700">
             <div class="carousel-caption d-none d-md-block">
                 <h5><?=$slide->title?></h5>
                 <p><?=$slide->caption?></p>
             </div>
         </div>
-        
-
 
     <?php endforeach ?>
         
     </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" 
+    data-bs-slide="prev">
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Previous</span>
     </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" 
+    data-bs-slide="next">
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Next</span>
     </button>
 </div>
+<!-- </div> -->
